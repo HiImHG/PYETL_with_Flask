@@ -116,17 +116,20 @@ def main(key_word, pages):
                 pass
 
         data['page'] = i + 1
-        # print(data['page'])
         tmp_url_parameters = [str(k) + "=" + str(v) + "&" for k, v in data.items()]
         tmp_url_parameters_str = ''.join(map(str, tmp_url_parameters))
         url = tmp_url + "?" + tmp_url_parameters_str
-        # print(url)
 
     df = pd.DataFrame(two_d_rows,
-                      columns=["Job Title", "Job Url", "Job Category", "Job Description", "Other Requirements",
-                               "Python", "AI(機器學習)", "SQL相關", "Python 相關套件工具"])
-    # df.to_excel('104JOB.xlsx', engine='xlsxwriter')
+                        columns=["Job Title", "Job Url", "Job Category", "Job Description", "Other Requirements",
+                                 "Python", "AI(機器學習)", "SQL相關", "Python 相關套件工具"])
+    return df
+
+
+def to_excel(df):
+    return df.to_excel('104JOB.xlsx', engine='xlsxwriter')
 
 
 if __name__ == "__main__":
     main()
+    to_excel()
