@@ -2,6 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import pandas as pd
+from IPython.display import display, HTML
+import time
+import random
+
 
 user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36 Edg/95.0.1020.44"
 tmp_url = "https://www.104.com.tw/jobs/search/"
@@ -35,12 +39,13 @@ def main(key_word, pages):
     two_d_rows = []
 
     for i in range(1, int(pages) + 1):
+        time.sleep(random.randint(3, 10)/10)
         res = ss.get(url, headers=headers1)
         soup = BeautifulSoup(res.text, 'html.parser')
         titleSoupList = soup.select('div[class="b-block__left"]')
         for title_soup in titleSoupList:
             try:
-                title = title_soup.select('a')[0].text
+                # title = title_soup.select('a')[0].text
                 article_url_tmp = title_soup.select('a')[0]['href']
                 article_url_real = "https:" + (article_url_tmp.split('?'))[0]
                 random_end_url = ("https:" + (article_url_tmp.split('?'))[0]).split('/')[4]
@@ -53,10 +58,9 @@ def main(key_word, pages):
                 res_article = ss.get(article_url_for_js, headers=headers2)
                 json_data = json.loads(res_article.text)
                 jobName = json_data['data']['header']['jobName']
-                jobDescription = json_data['data']['jobDetail']['jobDescription']
+                jobDescription = (json_data['data']['jobDetail']['jobDescription'])
                 other = json_data['data']['condition']['other']
                 jobCategory = [i['description'] for i in json_data['data']['jobDetail']['jobCategory']]
-
                 Python_related = ['Python', 'python', 'PYTHON']
                 AI_related = ['人工智慧', '機器學習', '深度學習', 'AI', 'Machine Learning']
                 SQL_related = ['SQL', 'MYSQL', 'mysql', 'MySQL', 'NoSQL']
@@ -120,16 +124,19 @@ def main(key_word, pages):
         tmp_url_parameters_str = ''.join(map(str, tmp_url_parameters))
         url = tmp_url + "?" + tmp_url_parameters_str
 
-    df = pd.DataFrame(two_d_rows,
-                        columns=["Job Title", "Job Url", "Job Category", "Job Description", "Other Requirements",
-                                 "Python", "AI(機器學習)", "SQL相關", "Python 相關套件工具"])
+    df = pd.DataFrame(two_d_rows, columns=["Job Title", "Job Url", "Job Category", "Job Description", "Other Requirements",
+                                           "Python", "AI(機器學習)", "SQL相關", "Python 相關套件工具"])
     return df
 
 
 def to_excel(df):
-    return df.to_excel('104JOB.xlsx', engine='xlsxwriter')
+    cur_time = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    return df.to_excel('./data/104JOB_{}.xlsx'.format(cur_time), index=False, engine='xlsxwriter')
+
+
+def pretty_print(df):
+    return display(HTML(df.to_html().replace("\\n", "<br>")))
 
 
 if __name__ == "__main__":
     main()
-    to_excel()

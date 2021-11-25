@@ -3,15 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello Page</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+    .w3-button {width:150px;}
+    body {
+  background-color: #F7E8DB;
+  color: black;
+    }
+    </style>
 </head>
 <body>
-    <h1>HIIIIII</h1>
+    <h1><b>請輸入欲搜尋的關鍵字及頁數</b></h1>
     <form method='post' action="/post_submit2">
         <p>keyword</p><input type='text' name='key_word'>
         <br>
          <p>pages</p><input type='text' name='pages'>
         <br>
-        <button type='submit'>Submit</button>
+        <p><button class="w3-button w3-light-blue">Submit</button></p>
+
     </form>
 </body>
 </html>

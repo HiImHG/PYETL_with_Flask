@@ -3,12 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>104搜尋結果</title>
+    <style>
+        .w3-button {width:150px;}
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+        th, td {
+          text-align: left;
+          padding: 8px;
+        }
+        tr:nth-child(even) {background-color: #f2f2f2;}
+        body {
+      background-color: #F7E8DB;
+      color: black;
+        }
+    </style>
 </head>
 <body>
+    <div>
+        <form method='post' action="/download">
+            <p><button class="w3-button w3-light-blue">DOWNLOAD</button></p>
+        </form>
+    </div>
+    <div>
+        {% for table in tables %}
+                    {{ table|safe }}
+        {% endfor %}
 
-{% for table in tables %}
-            {{titles[loop.index]}}
-            {{ table|safe }}
-{% endfor %}
+    </div>
 </body>
 </html>
