@@ -1,10 +1,11 @@
-from flask import Flask, redirect, request, render_template, url_for, send_from_directory, send_file
+from flask import Flask, redirect, request, render_template, url_for, make_response
 import crawlers as s
-import os
-from io import BytesIO
+from pandas import ExcelWriter
+import io
+import time
+
 
 app1 = Flask(__name__)
-# app1.config['UPLOAD_PATH'] = './data'
 
 
 @app1.route("/")
@@ -19,47 +20,30 @@ def submit():
     return render_template('main.html')
 
 
-# @app1.route("/post_submit", methods=['GET', 'POST'])
-# def submit():
-#     if request.method == 'POST':
-#         return 'keyword: ' + request.form.get('keyword') + ' pages: ' + request.form.get('pages')
-#     return render_template('main.html')
-
-
 @app1.route('/pandas/<key_word>_<pages>', methods=("POST", "GET"))
 def html_table(key_word, pages):
     global df
     df = s.main(key_word, pages)
-    return render_template('simple.html',  tables=[(df.to_html(classes='data', index=False)).replace("\\n", "<br>").replace("\\r", "")], titles=df.columns.values,
-                           key_word=key_word, pages=pages)
-
-# @app1.route('/pandas/<key_word>_<pages>', methods=("POST", "GET"))
-# def html_table(key_word, pages):
-#     global df
-#     df = s.main(key_word, pages)
-#     if request.method == 'POST':
-#         filename = s.to_excel(df).read()
-#         return send_from_directory(app1.config['UPLOAD_PATH'], filename=filename, as_attachment=True, key_word=key_word, pages=pages)
-#     return render_template('simple.html',  tables=[(df.to_html(classes='data', index=False)).replace("\\n", "<br>").replace("\\r", "")], titles=df.columns.values,
-#                            key_word=key_word, pages=pages)
+    return render_template('result.html',  tables=[(df.to_html(classes='data', index=False)).replace("\\n", "<br>").replace("\\r", "").replace("\\t", " ")], titles=df.columns.values, key_word=key_word, pages=pages)
 
 
-# @app1.route('/download', methods=['GET', 'POST'])
-# def download():
-#     if not os.path.exists('./data'):
-#         os.mkdir('./data')
-#     path = s.to_excel(df)
-#     return render_template('download.html', send_from_directory('./data', path=path, as_attachment=True))
+@app1.route('/exportUser')
+def export_user():
+    out = io.BytesIO()
+    # 實例化輸出xlsx的writer對象
+    writer = ExcelWriter(out, engine='xlsxwriter')
+    # 將SQLAlchemy模型的查詢對象拆分SQL語句和連接屬性傳給pandas的read_sql方法
+    df.to_excel(writer, index=False)
+    writer.save()
+    out.seek(0)
+    resp = make_response(out.getvalue())
+    # 設置response的header,讓瀏覽器解析爲文件下載行爲
+    cur_time = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    resp.headers['Content-Disposition'] = 'attachement; filename=104JOB_{}.xlsx'.format(cur_time)
+    resp.headers['Content-Type'] = 'application/ms-excel; charset=utf-8'
 
-@app1.route('/download', methods=("POST", "GET"))
-def send_html():
-    if request.method == 'POST':
-        output = BytesIO()
-        filename = s.to_excel(df)
-        filename.save()
-        output.seek(0)
-    return send_from_directory(output, as_attachment=True)
+    return resp
 
 
 if __name__ == '__main__':
-    app1.run(debug=True, port=5000)
+    app1.run(debug=True)

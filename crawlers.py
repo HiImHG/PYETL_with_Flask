@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import pandas as pd
-from IPython.display import display, HTML
 import time
 import random
 
@@ -58,7 +57,7 @@ def main(key_word, pages):
                 res_article = ss.get(article_url_for_js, headers=headers2)
                 json_data = json.loads(res_article.text)
                 jobName = json_data['data']['header']['jobName']
-                jobDescription = (json_data['data']['jobDetail']['jobDescription'])
+                jobDescription = json_data['data']['jobDetail']['jobDescription']
                 other = json_data['data']['condition']['other']
                 jobCategory = [i['description'] for i in json_data['data']['jobDetail']['jobCategory']]
                 Python_related = ['Python', 'python', 'PYTHON']
@@ -105,7 +104,7 @@ def main(key_word, pages):
                     SQL = "X"
 
                 for ptool in Python_Tools:
-                    if ptool in jobName or sql in jobDescription or sql in other:
+                    if ptool in jobName or ptool in jobDescription or ptool in other:
                         tools_true += 1
                     else:
                         pass
@@ -116,7 +115,7 @@ def main(key_word, pages):
 
                 rows = [jobName, article_url_real, jobCategory, jobDescription, other, Python, AI, SQL, pytools]
                 two_d_rows.append(rows)
-            except IndexError as e:
+            except IndexError:
                 pass
 
         data['page'] = i + 1
@@ -129,13 +128,9 @@ def main(key_word, pages):
     return df
 
 
-def to_excel(df):
-    cur_time = time.strftime("%Y%m%d_%H%M%S", time.localtime())
-    return df.to_excel('./data/104JOB_{}.xlsx'.format(cur_time), index=False, engine='xlsxwriter')
-
-
-def pretty_print(df):
-    return display(HTML(df.to_html().replace("\\n", "<br>")))
+# def to_excel(df):
+#     cur_time = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+#     return df.to_excel('./data/104JOB_{}.xlsx'.format(cur_time), index=False, engine='xlsxwriter')
 
 
 if __name__ == "__main__":
