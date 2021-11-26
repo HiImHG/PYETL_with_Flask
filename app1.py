@@ -32,12 +32,10 @@ def export_user():
     out = io.BytesIO()
     # 實例化輸出xlsx的writer對象
     writer = ExcelWriter(out, engine='xlsxwriter')
-    # 將SQLAlchemy模型的查詢對象拆分SQL語句和連接屬性傳給pandas的read_sql方法
     df.to_excel(writer, index=False)
     writer.save()
     out.seek(0)
     resp = make_response(out.getvalue())
-    # 設置response的header,讓瀏覽器解析爲文件下載行爲
     cur_time = time.strftime("%Y%m%d_%H%M%S", time.localtime())
     resp.headers['Content-Disposition'] = 'attachement; filename=104JOB_{}.xlsx'.format(cur_time)
     resp.headers['Content-Type'] = 'application/ms-excel; charset=utf-8'
