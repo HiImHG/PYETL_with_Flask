@@ -15,9 +15,9 @@
 <body>
     <h1><b>請輸入欲搜尋的關鍵字及頁數</b></h1>
     <form method='post' action="/post_submit2">
-        <p>keyword</p><input type='text' name='key_word'>
+        <p>keyword</p><input type='text' name='key_word' pattern="[\u4e00-\u9fa5-a-zA-Z0-9_\s]{1,25}">
         <br>
-         <p>pages</p><input type='text' name='pages'>
+         <p>pages</p><input type='number' step="10" min="1" max="99" name='pages' placeholder="請輸入欲搜尋頁數" value="1">
         <br>
         <p><button class="w3-button w3-light-blue">Submit</button></p>
 
