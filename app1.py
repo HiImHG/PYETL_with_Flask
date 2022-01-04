@@ -3,7 +3,7 @@ import crawlers as s
 from pandas import ExcelWriter
 import io
 import time
-
+import os
 
 app1 = Flask(__name__)
 
@@ -24,7 +24,9 @@ def submit():
 def html_table(key_word, pages):
     global df
     df = s.main(key_word, pages)
-    return render_template('result.html',  tables=[(df.to_html(classes='data', index=False)).replace("\\n", "<br>").replace("\\r", "").replace("\\t", " ")], titles=df.columns.values, key_word=key_word, pages=pages)
+    return render_template('result.html', tables=[
+        (df.to_html(classes='data', index=False)).replace("\\n", "<br>").replace("\\r", "").replace("\\t", " ")],
+                           titles=df.columns.values, key_word=key_word, pages=pages)
 
 
 @app1.route('/exportUser')
@@ -43,5 +45,8 @@ def export_user():
     return resp
 
 
+port = int(os.environ.get('PORT', 5000))
+
+
 if __name__ == '__main__':
-    app1.run(debug=True)
+    app1.run(port=port, debug=True)
