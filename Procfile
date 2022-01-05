@@ -1,1 +1,1 @@
-web: gunicorn -b 0.0.0.0:5000 app1:app
+web: gunicorn app1:app
