@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello Page</title>
+    <title>job-search-104-demo</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
     .w3-button {width:150px;}
@@ -15,9 +15,9 @@
 <body>
     <h1><b>請輸入欲搜尋的關鍵字及頁數</b></h1>
     <form method='post' action="/post_submit2">
-        <p>keyword</p><input type='text' name='key_word' pattern="[\u4e00-\u9fa5-a-zA-Z0-9_\s]{1,25}">
+        <p>keyword</p><input type='text' name='key_word' placeholder="多筆關鍵字可用空格隔開" pattern="[\u4e00-\u9fa5-a-zA-Z0-9_\s]{1,25}">
         <br>
-         <p>pages</p><input type='number' step="10" min="1" max="99" name='pages' placeholder="請輸入欲搜尋頁數" value="1">
+         <p>pages</p><input type='number' step="10" min="1" max="99" name='pages' value="1">
         <br>
         <p><button class="w3-button w3-light-blue">Submit</button></p>
 

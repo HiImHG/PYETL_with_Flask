@@ -32,7 +32,6 @@ def html_table(key_word, pages):
 @app1.route('/exportUser')
 def export_user():
     out = io.BytesIO()
-    # 實例化輸出xlsx的writer對象
     writer = ExcelWriter(out, engine='xlsxwriter')
     df.to_excel(writer, index=False)
     writer.save()
