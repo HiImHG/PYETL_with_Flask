@@ -28,7 +28,7 @@ Flask==2.0.2
 Flask-WTF==1.0.0
 fonttools==4.28.3
 ggplot==0.11.5
-gunicorn==20.1.0
+gunicorn==19.9.0
 h11==0.12.0
 idna==3.2
 imageio==2.13.4
