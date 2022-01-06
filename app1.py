@@ -33,15 +33,19 @@ def html_table(key_word, pages):
 def export_user():
     out = io.BytesIO()
     writer = ExcelWriter(out, engine='xlsxwriter')
-    df.to_excel(writer, index=False)
-    writer.save()
-    out.seek(0)
-    resp = make_response(out.getvalue())
-    cur_time = time.strftime("%Y%m%d_%H%M%S", time.localtime())
-    resp.headers['Content-Disposition'] = 'attachement; filename=104JOB_{}.xlsx'.format(cur_time)
-    resp.headers['Content-Type'] = 'application/ms-excel; charset=utf-8'
+    try:
 
-    return resp
+        df.to_excel(writer, index=False)
+        writer.save()
+        out.seek(0)
+        resp = make_response(out.getvalue())
+        cur_time = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+        resp.headers['Content-Disposition'] = 'attachement; filename=104JOB_{}.xlsx'.format(cur_time)
+        resp.headers['Content-Type'] = 'application/ms-excel; charset=utf-8'
+
+        return resp
+    except NameError:
+        print("請回上一頁重新點選下載")
 
 
 if __name__ == '__main__':

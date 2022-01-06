@@ -13,6 +13,8 @@ tmp_url = "https://www.104.com.tw/jobs/search/"
 def main(key_word, pages):
     if ' ' in key_word:
         key_word = key_word.replace(' ', '%20')
+    elif '　' in key_word:
+        key_word = key_word.replace('　', '%20')
 
     data_str = """ro: 0
     kwop: 11
@@ -61,8 +63,8 @@ def main(key_word, pages):
                 other = json_data['data']['condition']['other']
                 jobCategory = [i['description'] for i in json_data['data']['jobDetail']['jobCategory']]
                 Python_related = ['Python', 'python', 'PYTHON']
-                AI_related = ['人工智慧', '機器學習', '深度學習', 'AI', 'Machine Learning']
-                SQL_related = ['SQL', 'MYSQL', 'mysql', 'MySQL', 'NoSQL']
+                AI_related = ['人工智慧', '機器學習', '深度學習', 'AI', 'ai', 'Machine Learning', 'machine learning']
+                SQL_related = ['SQL', 'MYSQL', 'mysql', 'MySQL', 'NoSQL', 'Mongodb']
                 Python_Tools = ['Pytorch', 'Tensorflow', 'Keras']
 
                 Python_true = 0
@@ -126,11 +128,6 @@ def main(key_word, pages):
     df = pd.DataFrame(two_d_rows, columns=["Job Title", "Job Url", "Job Category", "Job Description", "Other Requirements",
                                            "Python", "AI(機器學習)", "SQL相關", "Python 相關套件工具"])
     return df
-
-
-# def to_excel(df):
-#     cur_time = time.strftime("%Y%m%d_%H%M%S", time.localtime())
-#     return df.to_excel('./data/104JOB_{}.xlsx'.format(cur_time), index=False, engine='xlsxwriter')
 
 
 if __name__ == "__main__":
