@@ -43,8 +43,8 @@ def export_user():
         resp.headers['Content-Type'] = 'application/ms-excel; charset=utf-8'
 
         return resp
-    except Exception:
-        print("請回上一頁重新點選下載")
+    except TypeError:
+        return "請回上一頁重新點選下載"
 
 
 if __name__ == '__main__':
