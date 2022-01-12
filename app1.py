@@ -4,6 +4,7 @@ from pandas import ExcelWriter
 import io
 import time
 import os
+import requests
 
 app1 = Flask(__name__)
 
@@ -43,7 +44,7 @@ def export_user():
         resp.headers['Content-Type'] = 'application/ms-excel; charset=utf-8'
 
         return resp
-    except TypeError:
+    except NameError:
         return "請回上一頁重新點選下載"
 
 
