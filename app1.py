@@ -34,7 +34,6 @@ def export_user():
     out = io.BytesIO()
     writer = ExcelWriter(out, engine='xlsxwriter')
     try:
-
         df.to_excel(writer, index=False)
         writer.save()
         out.seek(0)
@@ -44,7 +43,7 @@ def export_user():
         resp.headers['Content-Type'] = 'application/ms-excel; charset=utf-8'
 
         return resp
-    except NameError:
+    except Exception:
         print("請回上一頁重新點選下載")
 
 
