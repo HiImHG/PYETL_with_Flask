@@ -63,7 +63,7 @@ def main(key_word, pages):
                 other = json_data['data']['condition']['other']
                 jobCategory = [i['description'] for i in json_data['data']['jobDetail']['jobCategory']]
                 Python_related = ['Python', 'python', 'PYTHON']
-                AI_related = ['人工智慧', '機器學習', '深度學習', 'AI', 'ai', 'Machine Learning', 'machine learning']
+                AI_related = ['人工智慧', '機器學習', '深度學習', 'Machine Learning', 'machine learning']
                 SQL_related = ['SQL', 'MYSQL', 'mysql', 'MySQL', 'NoSQL', 'Mongodb']
                 Python_Tools = ['Pytorch', 'Tensorflow', 'Keras']
 
