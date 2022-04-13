@@ -59,13 +59,14 @@ def main(key_word, pages):
                 res_article = ss.get(article_url_for_js, headers=headers2)
                 json_data = json.loads(res_article.text)
                 jobName = json_data['data']['header']['jobName']
+                CompName = json_data['data']['header']['custName']
                 jobDescription = json_data['data']['jobDetail']['jobDescription']
                 other = json_data['data']['condition']['other']
                 jobCategory = [i['description'] for i in json_data['data']['jobDetail']['jobCategory']]
                 Python_related = ['Python', 'python', 'PYTHON']
                 AI_related = ['人工智慧', '機器學習', '深度學習', 'Machine Learning', 'machine learning']
-                SQL_related = ['SQL', 'MYSQL', 'mysql', 'MySQL', 'NoSQL', 'Mongodb']
-                Python_Tools = ['Pytorch', 'Tensorflow', 'Keras']
+                SQL_related = ['SQL', 'MYSQL', 'mysql', 'MySQL', 'NoSQL', 'Mongodb', 'Nosql']
+                Python_Tools = ['Pytorch', 'Tensorflow', 'Keras', 'pytorch', 'tensorflow', 'keras']
 
                 Python_true = 0
                 AI_true = 0
@@ -115,7 +116,7 @@ def main(key_word, pages):
                 else:
                     pytools = "X"
 
-                rows = [jobName, article_url_real, jobCategory, jobDescription, other, Python, AI, SQL, pytools]
+                rows = [jobName, CompName, article_url_real, jobCategory, jobDescription, other, Python, AI, SQL, pytools]
                 two_d_rows.append(rows)
             except IndexError:
                 pass
@@ -125,7 +126,7 @@ def main(key_word, pages):
         tmp_url_parameters_str = ''.join(map(str, tmp_url_parameters))
         url = tmp_url + "?" + tmp_url_parameters_str
 
-    df = pd.DataFrame(two_d_rows, columns=["Job Title", "Job Url", "Job Category", "Job Description", "Other Requirements",
+    df = pd.DataFrame(two_d_rows, columns=["Job Title", "Company", "Job Url", "Job Category", "Job Description", "Other Requirements",
                                            "Python", "AI(機器學習)", "SQL相關", "Python 相關套件工具"])
     return df
 
