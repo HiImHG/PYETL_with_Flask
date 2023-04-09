@@ -1,8 +1,8 @@
 ## 透過爬蟲批量搜尋 104 職缺，並於 Flask 框架建立前端網頁
 
-### 【2022.01.05更新】已部屬於 Heroku ，可直接透過以下連結使用
+### 【2023.04.09更新】已部屬於 railway ，可直接透過以下連結使用
 
-* https://job-search-104-demo.herokuapp.com/
+* https://production-104-test.up.railway.app/post_submit2
 
 ### 下載檔案透過 python 執行 app.py 檔使用
 
