@@ -20,6 +20,12 @@ h1,h2,h3,h4,h5,h6 {
 	margin:0;
 }
 
+
+/* Checkbox element, when checked */
+.input[type="checkbox"]:checked {
+  box-shadow: 0 0 0 3px hotpink;
+}
+
 .container {
 	max-width: 1000px;
 	margin-right:auto;

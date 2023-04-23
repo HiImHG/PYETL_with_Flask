@@ -26,7 +26,7 @@ def html_table(key_word, pages):
     global df
     df = s.main(key_word, pages)
     return render_template('result.html', tables=[
-        (df.to_html(classes='data', index=False)).replace("\\n", "<br>").replace("\\r", "").replace("\\t", " ")],
+        (df.to_html(classes='data', index=False, escape=False)).replace("\\n", "<br>").replace("\\r", "").replace("\\t", " ")],
                            titles=df.columns.values, key_word=key_word, pages=pages)
 
 

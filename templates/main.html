@@ -10,17 +10,39 @@
   background-color: #F7E8DB;
   color: black;
     }
+  checkbox,
+  input:checked {
+        border: none;
+        outline: 2px solid deeppink;
+  }
+
     </style>
 </head>
 <body>
     <h1><b>請輸入欲搜尋的關鍵字及頁數</b></h1>
     <form method='post' action="/post_submit2">
-        <p>keyword</p><input type='text' name='key_word' placeholder="多筆關鍵字可用空格隔開" pattern="[\u4e00-\u9fa5-a-zA-Z0-9_\s]{1,25}">
-        <br>
-         <p>pages(Up to 3)</p><input type='number' step="1" min="1" max="3" name='pages' value="1">
-        <br>
-        <p><button class="w3-button w3-light-blue">Submit</button></p>
-
+        <fieldset>
+            <legend><b>職缺搜尋:</b></legend>
+            <label>keyword:</label>
+            <input type='text' name='key_word' placeholder="多筆關鍵字可用空格隔開" pattern="[\u4e00-\u9fa5-a-zA-Z0-9_\s]{1,25}">
+            <br><br>
+            <label>pages(Up to 3):</label>
+            <input type='number' step="1" min="1" max="3" name='pages' value="1">
+            <br><br>
+            <div>
+                <input type="checkbox" id="cat1" name="cat1" value="cat1"/>
+                <label for="cat1">CAT1</label>
+            </div>
+            <div>
+                <input type="checkbox" id="cat2" name="cat2" value="cat2"/>
+                <label for="cat2">CAT2</label>
+            </div>
+            <div>
+                <input type="checkbox" id="job_label" name="job_label" value="job_label"/>
+                <label for="job_label">JOB LABEL</label>
+            </div>
+            <p><button class="w3-button w3-light-blue">Submit</button></p>
+            </fieldset>
     </form>
 </body>
 </html>

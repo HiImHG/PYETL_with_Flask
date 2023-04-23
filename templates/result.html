@@ -22,9 +22,13 @@
         }
         tr:nth-child(even) {background-color: #f2f2f2;}
         body {
-      background-color: #F7E8DB;
-      color: black;
+        background-color: #F7E8DB;
+        color: black;
         }
+<!--        th {-->
+<!--         position:sticky;-->
+<!--         top:0; /* 列首永遠固定於上 */-->
+<!--        }-->
     </style>
 </head>
 <body>
@@ -34,10 +38,13 @@
     <div>
         <h3><b>搜尋關鍵字： {{ key_word }}</b></h3>
         <h3><b>搜尋頁數： {{ pages }}</b></h3>
-
+    </div>
+    <div class="table_sticky_wrapper">
+        <table class="main_table">
         {% for table in tables %}
                     {{ table|safe }}
         {% endfor %}
+        </table>
     </div>
 </body>
 </html>

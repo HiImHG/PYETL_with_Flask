@@ -43,91 +43,102 @@ def main(key_word, pages):
         time.sleep(random.randint(3, 10)/10)
         res = ss.get(url, headers=headers1)
         soup = BeautifulSoup(res.text, 'html.parser')
-        titleSoupList = soup.select('div[class="b-block__left"]')
-        for title_soup in titleSoupList:
+        title_soup_list = soup.select('div[class="b-block__left"]')
+        for title_soup in title_soup_list:
             try:
-                # title = title_soup.select('a')[0].text
-                article_url_tmp = title_soup.select('a')[0]['href']
-                article_url_real = "https:" + (article_url_tmp.split('?'))[0]
-                random_end_url = ("https:" + (article_url_tmp.split('?'))[0]).split('/')[4]
-                article_url_for_js = "https://www.104.com.tw/job/ajax/content/" + random_end_url
-                referer = 'https://www.104.com.tw/job/' + random_end_url
-                headers2 = {
-                    "User-Agent": user_agent,
-                    "Referer": referer
-                }
-                res_article = ss.get(article_url_for_js, headers=headers2)
-                json_data = json.loads(res_article.text)
-                jobName = json_data['data']['header']['jobName']
-                CompName = json_data['data']['header']['custName']
-                jobDescription = json_data['data']['jobDetail']['jobDescription']
-                other = json_data['data']['condition']['other']
-                jobCategory = [i['description'] for i in json_data['data']['jobDetail']['jobCategory']]
-                Python_related = ['Python', 'python', 'PYTHON']
-                AI_related = ['人工智慧', '機器學習', '深度學習', 'Machine Learning', 'machine learning']
-                SQL_related = ['SQL', 'MYSQL', 'mysql', 'MySQL', 'NoSQL', 'Mongodb', 'Nosql']
-                Python_Tools = ['Pytorch', 'Tensorflow', 'Keras', 'pytorch', 'tensorflow', 'keras']
-
-                Python_true = 0
-                AI_true = 0
-                sql_true = 0
-                tools_true = 0
-                for Py_related in Python_related:
-                    if Py_related in jobName:
-                        Python_true += 1
-                    elif Py_related in jobDescription:
-                        Python_true += 1
-                    elif Py_related in other:
-                        Python_true += 1
-                    else:
-                        pass
-                if Python_true > 0:
-                    Python = "O"
+                if title_soup.find('svg')['class'][1] == 'b-icon--w18':
+                    continue
                 else:
-                    Python = "X"
+                    # title = title_soup.select('a')[0].text
+                    article_url_tmp = title_soup.select('a')[0]['href']
+                    article_url_real = "https:" + (article_url_tmp.split('?'))[0]
+                    random_end_url = ("https:" + (article_url_tmp.split('?'))[0]).split('/')[4]
+                    article_url_for_js = "https://www.104.com.tw/job/ajax/content/" + random_end_url
+                    referer = 'https://www.104.com.tw/job/' + random_end_url
+                    headers2 = {
+                        "User-Agent": user_agent,
+                        "Referer": referer
+                    }
+                    res_article = ss.get(article_url_for_js, headers=headers2)
+                    json_data = json.loads(res_article.text)
+                    job_name = json_data['data']['header']['jobName']
+                    comp_name = json_data['data']['header']['custName']
+                    job_description = json_data['data']['jobDetail']['jobDescription']
+                    other = json_data['data']['condition']['other']
+                    job_category = ', '.join([i['description'] for i in json_data['data']['jobDetail']['jobCategory']])
+                    salary = json_data['data']['jobDetail']['salary']
+                    # Python_related = ['Python', 'python', 'PYTHON']
+                    # AI_related = ['人工智慧', '機器學習', '深度學習', 'Machine Learning', 'machine learning']
+                    # SQL_related = ['SQL', 'MYSQL', 'mysql', 'MySQL', 'NoSQL', 'Mongodb', 'Nosql']
+                    # Python_Tools = ['Pytorch', 'Tensorflow', 'Keras', 'pytorch', 'tensorflow', 'keras']
+                    #
+                    # Python_true = 0
+                    # AI_true = 0
+                    # sql_true = 0
+                    # tools_true = 0
+                    # for Py_related in Python_related:
+                    #     if Py_related in jobName:
+                    #         Python_true += 1
+                    #     elif Py_related in jobDescription:
+                    #         Python_true += 1
+                    #     elif Py_related in other:
+                    #         Python_true += 1
+                    #     else:
+                    #         pass
+                    # if Python_true > 0:
+                    #     Python = "O"
+                    # else:
+                    #     Python = "X"
+                    #
+                    # for ai_re in AI_related:
+                    #     if ai_re in jobName or ai_re in jobDescription or ai_re in other:
+                    #         AI_true += 1
+                    #     else:
+                    #         pass
+                    # if AI_true > 0:
+                    #     AI = "O"
+                    # else:
+                    #     AI = "X"
+                    #
+                    # for sql in SQL_related:
+                    #     if sql in jobName or sql in jobDescription or sql in other:
+                    #         sql_true += 1
+                    #     else:
+                    #         pass
+                    # if sql_true > 0:
+                    #     SQL = "O"
+                    # else:
+                    #     SQL = "X"
+                    #
+                    # for ptool in Python_Tools:
+                    #     if ptool in jobName or ptool in jobDescription or ptool in other:
+                    #         tools_true += 1
+                    #     else:
+                    #         pass
+                    # if tools_true > 0:
+                    #     pytools = "O"
+                    # else:
+                    #     pytools = "X"
 
-                for ai_re in AI_related:
-                    if ai_re in jobName or ai_re in jobDescription or ai_re in other:
-                        AI_true += 1
-                    else:
-                        pass
-                if AI_true > 0:
-                    AI = "O"
-                else:
-                    AI = "X"
-
-                for sql in SQL_related:
-                    if sql in jobName or sql in jobDescription or sql in other:
-                        sql_true += 1
-                    else:
-                        pass
-                if sql_true > 0:
-                    SQL = "O"
-                else:
-                    SQL = "X"
-
-                for ptool in Python_Tools:
-                    if ptool in jobName or ptool in jobDescription or ptool in other:
-                        tools_true += 1
-                    else:
-                        pass
-                if tools_true > 0:
-                    pytools = "O"
-                else:
-                    pytools = "X"
-
-                rows = [jobName, CompName, article_url_real, jobCategory, jobDescription, other, Python, AI, SQL, pytools]
-                two_d_rows.append(rows)
+                    # rows = [job_name, comp_name, article_url_real, job_category, job_description, other, Python, AI, SQL, pytools]
+                    rows = [job_name, comp_name, salary, article_url_real, job_category, job_description, other]
+                    two_d_rows.append(rows)
             except IndexError:
-                pass
+                continue
+            except TypeError:
+                continue
 
         data['page'] = i + 1
         tmp_url_parameters = [str(k) + "=" + str(v) + "&" for k, v in data.items()]
         tmp_url_parameters_str = ''.join(map(str, tmp_url_parameters))
         url = tmp_url + "?" + tmp_url_parameters_str
 
-    df = pd.DataFrame(two_d_rows, columns=["Job Title", "Company", "Job Url", "Job Category", "Job Description", "Other Requirements",
-                                           "Python", "AI(機器學習)", "SQL相關", "Python 相關套件工具"])
+    # df = pd.DataFrame(two_d_rows, columns=["Job Title", "Company", "Job Url", "Job Category", "Job Description", "Other Requirements",
+    #                                        "Python", "AI(機器學習)", "SQL相關", "Python 相關套件工具"])
+
+    df = pd.DataFrame(two_d_rows, columns=["Job Title", "Company", "Salary", "Job Url", "Job Category", "Job Description", "Other Requirements"])
+    df['Job Title'] = '<a href="' + df['Job Url'] + '">' + df['Job Title'] + '</a>'
+    df = df.drop(["Job Url"], axis=1)
     return df
 
 
