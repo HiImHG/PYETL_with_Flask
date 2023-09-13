@@ -4,45 +4,80 @@
     <meta charset="UTF-8">
     <title>job-search-104-demo</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <style>
-    .w3-button {width:150px;}
-    body {
-  background-color: #F7E8DB;
-  color: black;
-    }
-  checkbox,
-  input:checked {
-        border: none;
-        outline: 2px solid deeppink;
-  }
-
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1><b>請輸入欲搜尋的關鍵字及頁數</b></h1>
-    <form method='post' action="/post_submit2">
+    <h1><b>104 爬蟲 Demo</b></h1>
+    <h3><b>請輸入欲搜尋的關鍵字、頁數、地區、職務類別</b></h3>
+    <form method='post' action="/post_submit">
         <fieldset>
             <legend><b>職缺搜尋:</b></legend>
-            <label>keyword:</label>
-            <input type='text' name='key_word' placeholder="多筆關鍵字可用空格隔開" pattern="[\u4e00-\u9fa5-a-zA-Z0-9_\s]{1,25}">
+            <label><b>keyword:</b></label>
+            <input type='text' name='key_word' required="required" placeholder="多筆關鍵字可用空格隔開" pattern="[\u4e00-\u9fa5-a-zA-Z0-9_\s]{1,25}">
             <br><br>
-            <label>pages(Up to 3):</label>
-            <input type='number' step="1" min="1" max="3" name='pages' value="1">
+            <label><b>搜尋頁數(最多3頁):</b></label>
+            <input type='number' step="1" min="1" max="3" name='pages' required="required" value="1">
             <br><br>
             <div>
-                <input type="checkbox" id="cat1" name="cat1" value="cat1"/>
-                <label for="cat1">CAT1</label>
+                <label for="dropdown"><b>職務類別：</b></label>
+                <select id="dropdown" name="job_item">
+                    {% for item in items %}
+                    <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
             </div>
+            <br>
             <div>
-                <input type="checkbox" id="cat2" name="cat2" value="cat2"/>
-                <label for="cat2">CAT2</label>
+                <label><b>是否只選擇可遠端工作?(未點選默認為否)</b></label>
+                <input type="checkbox" id="remote_only" name="remote_only" value="1, 2">
+                <label for="remote_only">是</label>
             </div>
+            <br>
+            <label><b>地區類別：</b></label>
+                <div class="button">
+                    <button type="button" id="uncheckAllCheckbox" onclick="uncheckAll()">取消全部勾選</button>
+                </div>
+                 {% macro render_checkbox_hierarchy(hierarchy, level=0) %}
+                    <div class="category-wrapper" id="category-wrapper">
+                        {% for area, items in hierarchy.items() %}
+                        <div class="checkbox-container">
+                            <div class="checkbox">
+                                <input type="checkbox" name="selected_items" id="{{ area }}Checkbox" value="{{ area }}"
+                                       onclick="toggleChildOptions('{{ area }}'); updateParentOptions('{{ area }}'); updateParentCheckbox('{{ area }}')">
+                            </div>
+                            <label for="{{ area }}Checkbox">{{ area }}</label>
+                            <div class="sub-categories">
+                                {% if items is mapping %}
+                                    {{ render_checkbox_hierarchy(items, level+1) }}
+                                {% else %}
+                                    {% for item in items %}
+                                    <div class="checkbox-container">
+                                        <div class="checkbox">
+                                            <input type="checkbox" name="selected_items" value="{{ item }}"
+                                                   onclick="updateParentOptions('{{ area }}'); updateParentCheckbox('{{ area }}')">
+                                        </div>
+                                        <label>{{ item }}</label>
+                                    </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endmacro %}
+                {{ render_checkbox_hierarchy(areas['台灣地區']) }}
+            <br>
             <div>
-                <input type="checkbox" id="job_label" name="job_label" value="job_label"/>
-                <label for="job_label">JOB LABEL</label>
+                    <label><b>你選擇的地區(未選擇將默認全選)：</b></label>
+                    <ul id="selectedAreas"></ul>
             </div>
-            <p><button class="w3-button w3-light-blue">Submit</button></p>
+            <script src="{{ url_for('static', filename='css/jsscript.js') }}"></script>
+            <br><br>
+            <p><button class="w3-button w3-teal">Submit</button></p>
             </fieldset>
     </form>
+    <a href="{{ link_url }}" target="_blank">
+        github 連結： <img src="{{ image_path }}" alt="github link" width="29" height="29">
+    </a>
 </body>
 </html>

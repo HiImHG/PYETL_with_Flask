@@ -1,0 +1,43 @@
+a {
+     text-decoration: none;
+    }
+
+.w3-button {
+width:150px;
+}
+
+body {
+background-color: #F7E8DB;
+color: black;
+}
+
+.category-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    position: relative;
+}
+
+.checkbox-container .checkbox {
+margin-right: 5px;
+}
+.sub-categories {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    background-color: #f9f9f9;
+    border: 0.5px solid #ddd;
+    padding: 10px;
+    white-space: nowrap;
+    overflow-x: auto;
+}
+.checkbox-container:hover .sub-categories {
+    display: block;
+}
