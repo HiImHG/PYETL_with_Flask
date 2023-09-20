@@ -31,7 +31,7 @@ def page_not_found(e):
 @app.route('/post_submit', methods=['GET', 'POST'])
 def submit():
     image_path = '/static/images/github.png'
-    link_url = 'https://github.com/HiImHG'
+    link_url = 'https://github.com/HiImHG/PYETL_with_Flask'
     if request.method == 'POST':
         area_list = ','.join(cat.area_no_list(area_raw, request.form.getlist('selected_items')))
         area_name_list = ', '.join(request.form.getlist('selected_items'))
